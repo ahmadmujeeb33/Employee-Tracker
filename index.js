@@ -82,26 +82,11 @@ function addEmployee(){
         ])
 
         .then((response)=>{
-
-            let roleChosen = getRoles();
-            console.log("rolechosen " + roleChosen);
-
-            const query = connection.query(
-                'INSERT INTO employee SET ?',
-                {
-                    first_name: response.fname,
-                    last_name: response.lname,
-                    role_id: roleChosen
-
-                }
-            )
-            // connection.end()
-
+            getRoles(response.fname,response.lname);            
         })
 }
 
-async function getRoles(){
-    let value;
+function getRoles(firstName,lastName){
     connection.query('SELECT * FROM role ',(err,results) =>{
         inquirer
             .prompt([
@@ -125,13 +110,32 @@ async function getRoles(){
         ])
         
         .then((response) =>{
+            let id;
             connection.query('SELECT id from role where title = ?',[response.role], (err,res) =>{
-                value = res[0].id;
+                id = res[0].id
+                console.log("this");
             })
-            
+
+            connection.query(
+                'INSERT INTO employee SET ?',
+                {
+                    first_name: firstName,
+                    last_name:lastName,
+                    role_id: id
+
+                },
+
+                (err, res) => {
+                    if (err) throw err;
+                    console.log("this ome here");
+                    start();
+                }
+              
+            )
         })
-        return value
+        
     })
+    
 }
 
 // function getManager(){
