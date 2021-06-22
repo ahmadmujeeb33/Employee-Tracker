@@ -164,12 +164,60 @@ function addRoles(){
         ])
 
         .then((response) =>{
-            getDepartment();
+            getDepartment(response.NewRole,response.salary);
         })
 }
 
-function getDepartment(){
-    
+function getDepartment(NewRole,salary){
+    connection.query('SELECT * FROM department ',(err,results) =>{
+        inquirer
+            .prompt([
+                {
+                    type:'list',
+                    message: 'Choose the employees department',
+                    name: 'ChooseDepartment',
+                    choices() {
+                        const choiceArray = [];
+                        results.forEach(({name}) => {
+                        choiceArray.push(name);
+                        });
+                        console.log(choiceArray);
+                        return choiceArray;
+            
+                    }
+            
+                },
+
+            ])
+
+            .then((response) =>{
+                    console.log(response, 'test'); 
+                    let id;
+                    connection.query('SELECT id from department where name = ?',[response.ChooseDepartment], (err,res) =>{
+                        id = res[0].id;                       
+                    })
+        
+                   setTimeout(function(){
+                        connection.query(
+                            'INSERT INTO role SET ?',
+                            {
+                                title:NewRole,
+                                salary:salary,
+                                department_id: id
+                    
+                            },
+                    
+                            (err, res) => {
+                                if (err) throw err;
+                                console.log(res)
+                                console.log("this ome here");
+                                start();
+                            }
+                        )
+                   },1000)
+                })
+                
+    })
 }
 
 // function getManager(){
