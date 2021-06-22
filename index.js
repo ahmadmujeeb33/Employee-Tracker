@@ -97,11 +97,11 @@ function addEmployee(){
                 {
                     first_name: response.fname,
                     last_name: response.lname,
-                    
+
 
                 }
             )
-            connection.end()
+            // connection.end()
         
             
         })
@@ -131,7 +131,13 @@ function getRoles(){
         ])
 
         .then((response) =>{
-            return response.role;
+            console.log(response);
+            connection.query('SELECT id from role where title = ?',[response.role], (err,res) =>{
+                console.log(err);
+                console.table(res);
+                return response.role;
+            })
+            
         })
        
     })
