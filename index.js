@@ -78,36 +78,30 @@ function addEmployee(){
                 name: "lname"
             }
 
-    
-
-            // {
-            //     type:'list',
-            //     message: 'What is the employees manager',
-            //     name: "lname"
-            // },
 
         ])
 
         .then((response)=>{
 
             let roleChosen = getRoles();
+            console.log("rolechosen " + roleChosen);
 
             const query = connection.query(
                 'INSERT INTO employee SET ?',
                 {
                     first_name: response.fname,
                     last_name: response.lname,
-
+                    role_id: roleChosen
 
                 }
             )
             // connection.end()
-        
-            
+
         })
 }
 
-function getRoles(){
+async function getRoles(){
+    let value;
     connection.query('SELECT * FROM role ',(err,results) =>{
         inquirer
             .prompt([
@@ -129,17 +123,14 @@ function getRoles(){
             },
 
         ])
-
+        
         .then((response) =>{
-            console.log(response);
             connection.query('SELECT id from role where title = ?',[response.role], (err,res) =>{
-                console.log(err);
-                console.table(res);
-                return response.role;
+                value = res[0].id;
             })
             
         })
-       
+        return value
     })
 }
 
