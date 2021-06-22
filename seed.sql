@@ -24,20 +24,20 @@ CREATE Table employee(
     first_name VARCHAR(30),
     last_name VARCHAR(30), 
     role_id INT,
-    -- manager_id INT,
+    manager_id INT,
     FOREIGN KEY (role_id) REFERENCES role(id),
-    -- FOREIGN KEY(manager_id) REFERENCES employee(id) ON DELETE SET NULL,
+    FOREIGN KEY(manager_id) REFERENCES employee(id) ON DELETE SET NULL,
     PRIMARY KEY (id) 
 );
 
 INSERT INTO department(name) values('Engineering');
-INSERT INTO role(title,salary,department_id) values('Manager',100000, 1);
+INSERT INTO role(title,salary,department_id) values('Software Engineer',100000, 1);
 INSERT INTO employee(first_name,last_name,role_id) values('Ahmad','Mujeeb',1);
 
-INSERT INTO department(name) values('Engineering');
-INSERT INTO role(title,salary,department_id) values('Manager',100000, 2);
+INSERT INTO department(name) values('Law');
+INSERT INTO role(title,salary,department_id) values('Sales Person',100000, 2);
 INSERT INTO employee(first_name,last_name,role_id) values('Lemar','Jackson',2);
 
-INSERT INTO department(name) values('Engineering');
-INSERT INTO role(title,salary,department_id) values('Manager',100000, 3);
+INSERT INTO department(name) values('Finance');
+INSERT INTO role(title,salary,department_id) values('Accountant',100000, 3);
 INSERT INTO employee(first_name,last_name,role_id) values('John','Cena',3);
