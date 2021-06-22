@@ -35,7 +35,10 @@ const start = () =>{
         .then((response) =>{
 
             if(response.options === 'add employees'){
-                addEmployee()
+                addEmployee();
+            }
+            else if(response.options === 'add roles'){
+                addRoles();
             }
                 // case 'View all Employees':
                 //     // something
@@ -110,33 +113,41 @@ function getRoles(firstName,lastName){
         ])
         
         .then((response) =>{
+            console.log(response, 'test'); 
             let id;
             connection.query('SELECT id from role where title = ?',[response.role], (err,res) =>{
                 id = res[0].id
                 console.log("this");
             })
 
-            connection.query(
-                'INSERT INTO employee SET ?',
-                {
-                    first_name: firstName,
-                    last_name:lastName,
-                    role_id: id
-
-                },
-
-                (err, res) => {
-                    if (err) throw err;
-                    console.log("this ome here");
-                    start();
-                }
-              
-            )
+           setTimeout(function(){
+                connection.query(
+                    'INSERT INTO employee SET ?',
+                    {
+                        first_name: firstName,
+                        last_name:lastName,
+                        role_id: id
+            
+                    },
+            
+                    (err, res) => {
+                        if (err) throw err;
+                        console.log(res)
+                        console.log("this ome here");
+                        start();
+                    }
+                )
+           },1000)
         })
         
     })
     
 }
+
+function addRoles(){
+    
+}
+
 
 // function getManager(){
 //     con.query("SELECT * FROM customers", function (err, result, fields) {
