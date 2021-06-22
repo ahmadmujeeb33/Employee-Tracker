@@ -145,9 +145,32 @@ function getRoles(firstName,lastName){
 }
 
 function addRoles(){
-    
+    inquirer
+        .prompt([
+
+            {
+                type:'input',
+                message: 'Please enter a new role you would like to add',
+                name: "NewRole"
+            },
+
+            {
+                type:'input',
+                message: 'Please enter the salary of this role',
+                name: "salary"
+            }, 
+        
+
+        ])
+
+        .then((response) =>{
+            getDepartment();
+        })
 }
 
+function getDepartment(){
+    
+}
 
 // function getManager(){
 //     con.query("SELECT * FROM customers", function (err, result, fields) {
