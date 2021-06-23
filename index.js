@@ -292,20 +292,21 @@ function UpdateEmployeRoles(){
                     name: 'employee',
                     choices() {
                         const choiceArray = [];
-                        results.forEach(({first_name,last_name}) => {
-                            let name = first_name + " " + last_name;
-                            choiceArray.push(name);
+                        results.forEach(({first_name,last_name,id}) => {
+                            let Fullname = first_name + " " + last_name;
+                            let object = {name:Fullname,value:id}
+                            choiceArray.push(object);
                         });
                         console.log(choiceArray);
                         return choiceArray;
-
                     }
 
                 },
 
             ])
             .then((response)=>{
-                connection.query('Select role_id FROM employee Where first_name = ? and last_name = ? ',[])
+                //response.employee=value:1
+                console.log(response.employee);
                 connection.query('SELECT * FROM role ', (err, results) => {
                     inquirer
                         .prompt([
@@ -328,13 +329,13 @@ function UpdateEmployeRoles(){
         
                         ])
         
-                        .then((response) => {
+                        .then((choices) => {
                             let id;
-                            connection.query('SELECT id from role where title = ?', [response.role], (err, res) => {
+                            connection.query('SELECT id from role where title = ?', [choices.role], (err, res) => {
                                 id = res[0].id
-                                var sql = "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'";
-                                connection.query(sql,function(err, res){
-                                        
+                                var sql = 'UPDATE employee SET role_id = ? WHERE role_id = ?';
+                                connection.query(sql,[res[0].id,response.employee],function(err, res){
+                                        start();
                                     
                                 })
                             })
