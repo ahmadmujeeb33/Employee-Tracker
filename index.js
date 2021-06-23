@@ -127,14 +127,9 @@ function getRoles(firstName, lastName) {
             ])
 
             .then((response) => {
-                console.log(response, 'test');
                 let id;
                 connection.query('SELECT id from role where title = ?', [response.role], (err, res) => {
                     id = res[0].id
-                    console.log("this");
-                })
-
-                setTimeout(function () {
                     connection.query(
                         'INSERT INTO employee SET ?',
                         {
@@ -151,7 +146,9 @@ function getRoles(firstName, lastName) {
                             start();
                         }
                     )
-                }, 1000)
+                })
+
+                     
             })
 
     })
@@ -259,19 +256,25 @@ function AddDepartments() {
 function ViewEmployees(){
     connection.query('SELECT employee.id,employee.first_name,employee.last_name,role.title,department.name as Department,role.salary,employee.manager_id as manager from ((employee inner join role on employee.role_id = role.id) INNER JOIN department on department.id = role.department_id)',function(err,res){
         console.table(res)
+        start()
     })
+    
 }
 
 function ViewRoles(){
     connection.query('SELECT role.id,role.title,role.salary,department.name as Department from role inner join department on role.department_id = department.id',function(err,res){
         console.table(res)
+        start()
     })
+    
 }
 
 function ViewDepartments(){
     connection.query('SELECT * FROM department',function(err,res){
-        console.table(res)
+        console.table(res);
+        start()
     })
+    
     
 }
 
