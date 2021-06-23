@@ -292,8 +292,9 @@ function UpdateEmployeRoles(){
                     name: 'employee',
                     choices() {
                         const choiceArray = [];
-                        results.forEach(({firstName,lastName}) => {
-                            choiceArray.push(title);
+                        results.forEach(({first_name,last_name}) => {
+                            let name = first_name + " " + last_name;
+                            choiceArray.push(name);
                         });
                         console.log(choiceArray);
                         return choiceArray;
@@ -303,43 +304,47 @@ function UpdateEmployeRoles(){
                 },
 
             ])
-        connection.query('SELECT * FROM role ', (err, results) => {
-            inquirer
-                .prompt([
-
-                    {
-                        type: 'list',
-                        message: 'What is the employees new role',
-                        name: 'role',
-                        choices() {
-                            const choiceArray = [];
-                            results.forEach(({title}) => {
-                                choiceArray.push(title);
-                            });
-                            console.log(choiceArray);
-                            return choiceArray;
-
-                        }
-
-                    },
-
-                ])
-
-                .then((response) => {
-                    let id;
-                    connection.query('SELECT id from role where title = ?', [response.role], (err, res) => {
-                        id = res[0].id
-                        var sql = "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'";
-                        connection.query(sql,function(err, res){
+            .then((response)=>{
+                connection.query('Select role_id FROM employee Where first_name = ? and last_name = ? ',[])
+                connection.query('SELECT * FROM role ', (err, results) => {
+                    inquirer
+                        .prompt([
+        
+                            {
+                                type: 'list',
+                                message: 'What is the employees new role',
+                                name: 'role',
+                                choices() {
+                                    const choiceArray = [];
+                                    results.forEach(({title}) => {
+                                        choiceArray.push(title);
+                                    });
+                                    console.log(choiceArray);
+                                    return choiceArray;
+        
+                                }
+        
+                            },
+        
+                        ])
+        
+                        .then((response) => {
+                            let id;
+                            connection.query('SELECT id from role where title = ?', [response.role], (err, res) => {
+                                id = res[0].id
+                                var sql = "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'";
+                                connection.query(sql,function(err, res){
+                                        
+                                    
+                                })
+                            })
+        
                                 
-                            
                         })
-                    })
-
-                        
+        
                 })
-
-        })
+            })
+        
     })
 }
 
