@@ -54,6 +54,9 @@ const start = () => {
             else if(response.options === 'View all departments'){
                 ViewDepartments();
             }
+            else if(response.options === 'Update Employee Roles'){
+                UpdateEmployeRoles();
+            }
             // case 'View all Employees':
             //     // something
 
@@ -276,6 +279,68 @@ function ViewDepartments(){
     })
     
     
+}
+
+function UpdateEmployeRoles(){
+    connection.query('SELECT * FROM employee',(err, results) =>{
+        inquirer
+            .prompt([
+
+                {
+                    type: 'list',
+                    message: 'Pick an employee',
+                    name: 'employee',
+                    choices() {
+                        const choiceArray = [];
+                        results.forEach(({firstName,lastName}) => {
+                            choiceArray.push(title);
+                        });
+                        console.log(choiceArray);
+                        return choiceArray;
+
+                    }
+
+                },
+
+            ])
+        connection.query('SELECT * FROM role ', (err, results) => {
+            inquirer
+                .prompt([
+
+                    {
+                        type: 'list',
+                        message: 'What is the employees new role',
+                        name: 'role',
+                        choices() {
+                            const choiceArray = [];
+                            results.forEach(({title}) => {
+                                choiceArray.push(title);
+                            });
+                            console.log(choiceArray);
+                            return choiceArray;
+
+                        }
+
+                    },
+
+                ])
+
+                .then((response) => {
+                    let id;
+                    connection.query('SELECT id from role where title = ?', [response.role], (err, res) => {
+                        id = res[0].id
+                        var sql = "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'";
+                        connection.query(sql,function(err, res){
+                                
+                            
+                        })
+                    })
+
+                        
+                })
+
+        })
+    })
 }
 
 
