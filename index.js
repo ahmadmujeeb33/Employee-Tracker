@@ -269,6 +269,9 @@ function ViewRoles(){
 }
 
 function ViewDepartments(){
+    connection.query('SELECT * FROM department',function(err,res){
+        console.table(res)
+    })
     
 }
 
