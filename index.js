@@ -25,7 +25,7 @@ const start = () => {
                 type: 'list',
                 message: 'What would you like to do',
                 name: 'options',
-                choices: ['View all Employees', 'View all departments', 'View all roles', 'add departments', 'add roles', 'add employees', 'Update Employee Roles']
+                choices: ['View all Employees', 'View all departments', 'View all roles', 'add departments', 'add roles', 'add employees', 'Update Employee Roles','Exit']
             }
 
         ])
@@ -52,6 +52,9 @@ const start = () => {
             }
             else if(response.options === 'Update Employee Roles'){
                 UpdateEmployeRoles();
+            }
+            else if(response.options === 'Exit'){
+                connection.end()
             }
         })
 }
@@ -203,7 +206,7 @@ function AddDepartments() {
         })
 }
 function ViewEmployees(){
-    connection.query('SELECT employee.id,employee.first_name,employee.last_name,role.title,department.name as Department,role.salary,employee.manager_id as manager from ((employee inner join role on employee.role_id = role.id) INNER JOIN department on department.id = role.department_id)',function(err,res){
+    connection.query('SELECT employee.id,employee.first_name,employee.last_name,role.title,department.name as Department,role.salary,employee.manager_id as manager from ((employee inner join role on employee.role_id = role.id) INNER JOIN department on role.department_id = department.id )',function(err,res){
         console.table(res)
         start()
     }) 
@@ -260,8 +263,11 @@ function UpdateEmployeRoles(){
                         ])    
                         .then((choices) => {
                             connection.query('SELECT id from role where title = ?', [choices.role], (err, res) => {
-                                var sql = 'UPDATE employee SET role_id = ? WHERE role_id = ?';
-                                connection.query(sql,[res[0].id,response.employee],function(err, res){
+                               let initalid = res[0].id;
+                               console.log("nitalid" + initalid);
+                               console.log("repsonse.employee " + response.employee);
+                                var sql = 'UPDATE employee SET role_id = ? WHERE id = ?';
+                                connection.query(sql,[initalid,response.employee],function(err, res){
                                         start();
                                     
                                 })
