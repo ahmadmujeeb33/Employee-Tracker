@@ -206,7 +206,7 @@ function AddDepartments() {
         })
 }
 function ViewEmployees(){
-    connection.query('SELECT employee.id,employee.first_name,employee.last_name,role.title,department.name as Department,role.salary,employee.manager_id as manager from ((employee inner join role on employee.role_id = role.id) INNER JOIN department on role.department_id = department.id )',function(err,res){
+    connection.query('SELECT employee.id,employee.first_name,employee.last_name,role.title,department.name as Department,role.salary,employee.manager_id as manager from employee inner join role on employee.role_id = role.id INNER JOIN department on role.department_id = department.id ORDER BY employee.id',function(err,res){
         console.table(res)
         start()
     }) 
